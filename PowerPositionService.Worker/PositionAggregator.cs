@@ -9,6 +9,22 @@ namespace PowerPositionService.Worker
         public const int Periods = 24;
         public const int StartingHour = 23;
 
+        /// <summary>
+        /// Aggregates the trade volumes across all periods for the specified collection of power trades,
+        /// returning a list of positions with local hour mappings and total volumes per period.
+        /// </summary>
+        /// <param name="trades">
+        /// The collection of <see cref="PowerTrade"/> instances to aggregate.
+        /// Each trade contains period-based volume data.
+        /// </param>
+        /// <returns>
+        /// A collection of <see cref="TradePosition"/> objects, one for each period,
+        /// where the volume represents the sum of all trade volumes for that period and
+        /// the <c>LocalHour</c> corresponds to the mapped hour of the day.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="trades"/> is <c>null</c> or empty.
+        /// </exception>
         public IEnumerable<TradePosition> AggregatePositions(IEnumerable<PowerTrade> trades)
         {
             if (trades == null || !trades.Any())

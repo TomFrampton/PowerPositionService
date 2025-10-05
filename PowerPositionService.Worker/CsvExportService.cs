@@ -15,7 +15,7 @@ namespace PowerPositionService.Worker
             _schedulerOptions = schedulerOptions.Value;
         }
 
-        public async Task ExportPositionsAsync(IEnumerable<TradePosition> positions)
+        public async Task ExportPositionsAsync(IEnumerable<TradePosition> positions, DateTime time)
         {
             var outputDirectory = _schedulerOptions.OutputDirectory!;
 
@@ -24,7 +24,7 @@ namespace PowerPositionService.Worker
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmm");
+            var timestamp = time.ToString("yyyyMMdd_HHmm");
             var fileName = $"PowerPosition_{timestamp}.csv";
 
             string filePath = Path.Combine(outputDirectory, fileName);
@@ -35,7 +35,7 @@ namespace PowerPositionService.Worker
 
             foreach (var position in positions)
             {
-                string timeFormatted = position.LocalHour?.ToString("D2") + ":00";
+                string timeFormatted = position.LocalHour.ToString("D2") + ":00";
                 var line = string.Format(CultureInfo.InvariantCulture, "{0},{1}", timeFormatted, position.Volume);
 
                 stringBuilder.AppendLine(line);

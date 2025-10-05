@@ -2,7 +2,7 @@
 {
     public class TradePosition
     {
-        public int? LocalHour { get; set; }
+        public int LocalHour { get; set; }
         public double? Volume { get; set; }
     }
 }

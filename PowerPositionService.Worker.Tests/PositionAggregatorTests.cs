@@ -1,5 +1,4 @@
-﻿
-using Services;
+﻿using Services;
 
 namespace PowerPositionService.Worker.Tests
 {
@@ -42,14 +41,14 @@ namespace PowerPositionService.Worker.Tests
         public void AggregatePositions_ThrowsIfTradesNull()
         {
             var ex = Assert.Throws<ArgumentException>(() => _aggregator.AggregatePositions(null));
-            Assert.Contains("Trades collection cannot be null", ex.Message);
+            Assert.Contains("Trades collection cannot be null or empty.", ex.Message);
         }
 
         [Fact]
         public void AggregatePositions_ThrowsIfTradesEmpty()
         {
             var ex = Assert.Throws<ArgumentException>(() => _aggregator.AggregatePositions(new List<PowerTrade>()));
-            Assert.Contains("Trades collection cannot be null", ex.Message);
+            Assert.Contains("Trades collection cannot be null or empty.", ex.Message);
         }
 
         private PowerTrade CreateMockTrade(double volumePerPeriod)
