@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPositionService.Worker", "PowerPositionService.Worker\PowerPositionService.Worker.csproj", "{9A193E85-1ADA-4DCD-9710-F7DE975BA31D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPositionService.Worker.Tests", "PowerPositionService.Worker.Tests\PowerPositionService.Worker.Tests.csproj", "{40C295EB-96C1-4510-A527-0C55EF124E8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A193E85-1ADA-4DCD-9710-F7DE975BA31D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A193E85-1ADA-4DCD-9710-F7DE975BA31D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A193E85-1ADA-4DCD-9710-F7DE975BA31D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A193E85-1ADA-4DCD-9710-F7DE975BA31D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C295EB-96C1-4510-A527-0C55EF124E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C295EB-96C1-4510-A527-0C55EF124E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C295EB-96C1-4510-A527-0C55EF124E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C295EB-96C1-4510-A527-0C55EF124E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2340C211-8667-42C7-AAEA-61B8E453610E}
+	EndGlobalSection
+EndGlobal
