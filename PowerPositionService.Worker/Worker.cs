@@ -90,7 +90,7 @@ namespace PowerPositionService.Worker
             
             try
             {
-                var dayAheadDate = GetDayAheadTradingDate();
+                var dayAheadDate = GetDayAheadTradingDate(DateTime.UtcNow);
                 var localTime = DateTime.Now;
 
                 _logger.LogInformation("Run {RunId} started at {time:dd/MM/yyyy}", runId, localTime);
@@ -142,12 +142,13 @@ namespace PowerPositionService.Worker
             }
         }
 
-        private DateTime GetDayAheadTradingDate()
+        private DateTime GetDayAheadTradingDate(DateTime utcNow)
         {
             var londonTimezone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            DateTime currentLondonTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, londonTimezone);
+            DateTime londonTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, londonTimezone);
 
-            return currentLondonTime.Date.AddDays(1);
+            // If current time is 23:00 or later in trading terms its already the next day, so return the day after tomorrow
+            return londonTime.Date.AddDays(londonTime.Hour >= 23 ? 2 : 1);
         }
     }
 }
