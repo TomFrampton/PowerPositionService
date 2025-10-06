@@ -93,7 +93,7 @@ namespace PowerPositionService.Worker
                 var dayAheadDate = GetDayAheadTradingDate(DateTime.UtcNow);
                 var localTime = DateTime.Now;
 
-                _logger.LogInformation("Run {RunId} started at {time:dd/MM/yyyy}", runId, localTime);
+                _logger.LogInformation("Run {RunId} started at {time:dd/MM/yyyy HH:mm:ss}", runId, localTime);
 
                 // Retry up to 10 times to get trades to handle transient errors
                 var trades = await RetryHelper.WithAttemptsAsync(10, async () =>
