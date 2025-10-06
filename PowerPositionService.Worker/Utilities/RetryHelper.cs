@@ -21,8 +21,22 @@
                 {
                     attempt++;
                     if (attempt > attempts) throw;
+
+                    await Task.Delay(TimeSpan.FromSeconds(2 * (attempt - 1)), cancellationToken);
                 }
             }
+        }
+
+        public static async Task WithAttemptsAsync(int attempts, Func<Task> func, CancellationToken cancellationToken = default)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+
+            await WithAttemptsAsync(attempts, async () =>
+            {
+                await func();
+                return true;
+
+            }, cancellationToken);
         }
     }
 }

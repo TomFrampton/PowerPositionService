@@ -90,7 +90,7 @@ namespace PowerPositionService.Worker
             
             try
             {
-                var startTime = DateTime.UtcNow;
+                var startTime = DateTime.Now;
 
                 _logger.LogInformation("Run {RunId} started at {time}", runId, startTime);
 
@@ -111,7 +111,20 @@ namespace PowerPositionService.Worker
 
                 var positions = _positionAggregator.AggregatePositions(trades);
 
-                await _exportService.ExportPositionsAsync(positions, startTime);
+                // Retry up to 10 times incase of transient file system errors
+                await RetryHelper.WithAttemptsAsync(10, async () =>
+                {
+                    try
+                    {
+                        await _exportService.ExportPositionsAsync(positions, startTime);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to export positions. Retrying.");
+                        throw;
+                    }
+
+                }, cancellationToken);
 
                 stopwatch.Stop();
                 _logger.LogInformation("Run {RunId} completed in {ElapsedMilliseconds} ms", runId, stopwatch.ElapsedMilliseconds);
