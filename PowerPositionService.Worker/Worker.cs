@@ -13,6 +13,7 @@ namespace PowerPositionService.Worker
         private readonly IPowerService _powerService;
         private readonly IPositionAggregator _positionAggregator;
         private readonly IExportService _exportService;
+        private readonly ITradingDateService _tradingDateService;
 
         private readonly ILogger<Worker> _logger;
         private readonly SchedulerOptions _schedulerOptions;
@@ -23,12 +24,14 @@ namespace PowerPositionService.Worker
             IPowerService powerService,
             IPositionAggregator positionAggregator,
             IExportService exportService,
+            ITradingDateService tradingDateService,
             ILogger<Worker> logger,
             IOptions<SchedulerOptions> schedulerOptions)
         {
             _powerService = powerService;
             _positionAggregator = positionAggregator;
             _exportService = exportService;
+            _tradingDateService = tradingDateService;
 
             _logger = logger;
             _schedulerOptions = schedulerOptions.Value;
@@ -90,7 +93,7 @@ namespace PowerPositionService.Worker
             
             try
             {
-                var dayAheadDate = GetDayAheadTradingDate(DateTime.UtcNow);
+                var dayAheadDate = _tradingDateService.GetDayAheadDate(DateTime.UtcNow);
                 var localTime = DateTime.Now;
 
                 _logger.LogInformation("Run {RunId} started at {time:dd/MM/yyyy HH:mm:ss}", runId, localTime);
@@ -140,15 +143,6 @@ namespace PowerPositionService.Worker
                 stopwatch.Stop();
                 _logger.LogError(ex, "Run {RunId} failed after {ElapsedMilliseconds} ms", runId, stopwatch.ElapsedMilliseconds);
             }
-        }
-
-        private DateTime GetDayAheadTradingDate(DateTime utcNow)
-        {
-            var londonTimezone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            DateTime londonTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, londonTimezone);
-
-            // If current time is 23:00 or later in trading terms its already the next day, so return the day after tomorrow
-            return londonTime.Date.AddDays(londonTime.Hour >= 23 ? 2 : 1);
         }
     }
 }

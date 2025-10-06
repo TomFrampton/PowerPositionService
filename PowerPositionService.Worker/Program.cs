@@ -22,6 +22,7 @@ namespace PowerPositionService.Worker
             builder.Services.AddTransient<IPowerService, PowerService>();
             builder.Services.AddTransient<IExportService, CsvExportService>();
             builder.Services.AddTransient<IPositionAggregator, PositionAggregator>();
+            builder.Services.AddTransient<ITradingDateService, TradingDateService>();
 
             var host = builder.Build();
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
