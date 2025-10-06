@@ -90,17 +90,17 @@ namespace PowerPositionService.Worker
             
             try
             {
-                var londonTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-                var startTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, londonTimeZone);
+                var dayAheadDate = GetDayAheadTradingDate();
+                var localTime = DateTime.Now;
 
-                _logger.LogInformation("Run {RunId} started at {time}", runId, startTime);
+                _logger.LogInformation("Run {RunId} started at {time:dd/MM/yyyy}", runId, localTime);
 
                 // Retry up to 10 times to get trades to handle transient errors
                 var trades = await RetryHelper.WithAttemptsAsync(10, async () =>
                 {
                     try
                     {
-                        return await _powerService.GetTradesAsync(startTime);
+                        return await _powerService.GetTradesAsync(dayAheadDate);
                     }
                     catch (Exception ex)
                     {
@@ -117,7 +117,7 @@ namespace PowerPositionService.Worker
                 {
                     try
                     {
-                        await _exportService.ExportPositionsAsync(positions, startTime);
+                        await _exportService.ExportPositionsAsync(positions, localTime);
                     }
                     catch (Exception ex)
                     {
@@ -140,6 +140,14 @@ namespace PowerPositionService.Worker
                 stopwatch.Stop();
                 _logger.LogError(ex, "Run {RunId} failed after {ElapsedMilliseconds} ms", runId, stopwatch.ElapsedMilliseconds);
             }
+        }
+
+        private DateTime GetDayAheadTradingDate()
+        {
+            var londonTimezone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            DateTime currentLondonTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, londonTimezone);
+
+            return currentLondonTime.Date.AddDays(1);
         }
     }
 }
