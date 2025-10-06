@@ -25,7 +25,7 @@ namespace PowerPositionService.Worker
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="trades"/> is <c>null</c> or empty.
         /// </exception>
-        public IEnumerable<TradePosition> AggregatePositions(IEnumerable<PowerTrade> trades)
+        public IEnumerable<TradePosition> AggregatePositions(IEnumerable<PowerTrade>? trades)
         {
             if (trades == null || !trades.Any())
             {

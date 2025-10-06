@@ -58,7 +58,10 @@ namespace PowerPositionService.Worker.Tests
 
         private PowerTrade CreateMockTradeWithCustomPeriods(int periodCount, double volumePerPeriod)
         {
-            var trade = PowerTrade.Create(DateTime.Now, periodCount);
+            var londonTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            var time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, londonTimeZone);
+
+            var trade = PowerTrade.Create(time, periodCount);
 
             foreach (var period in trade.Periods)
             {

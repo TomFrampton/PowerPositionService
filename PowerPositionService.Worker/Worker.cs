@@ -90,7 +90,8 @@ namespace PowerPositionService.Worker
             
             try
             {
-                var startTime = DateTime.Now;
+                var londonTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+                var startTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, londonTimeZone);
 
                 _logger.LogInformation("Run {RunId} started at {time}", runId, startTime);
 
