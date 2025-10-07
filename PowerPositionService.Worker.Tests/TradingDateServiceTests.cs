@@ -14,7 +14,9 @@ namespace PowerPositionService.Worker.Tests
         [Theory]
         [InlineData("2025-10-01T09:00:00Z", "2025-10-02")] // London 10:00 BST
         [InlineData("2025-10-01T21:59:00Z", "2025-10-02")] // London 22:59 BST
+        [InlineData("2025-09-30T23:00:00Z", "2025-10-02")] // London 00:00 BST
         [InlineData("2025-12-01T22:30:00Z", "2025-12-02")] // London 22:30 GMT
+        [InlineData("2025-12-01T00:00:00Z", "2025-12-02")] // London 00:00 GMT
         public void GetDayAheadDate_Before23London_ReturnsTomorrow(string utcNowString, string expectedDateString)
         {
             DateTime utcNow = DateTime.Parse(utcNowString, null, DateTimeStyles.AdjustToUniversal);
@@ -28,7 +30,9 @@ namespace PowerPositionService.Worker.Tests
         [Theory]
         [InlineData("2025-10-01T22:15:00Z", "2025-10-03")] // London 23:15 BST
         [InlineData("2025-10-01T23:00:00Z", "2025-10-03")] // London 00:00 BST
+        [InlineData("2025-10-01T22:00:00Z", "2025-10-03")] // London 23:00 BST
         [InlineData("2025-12-01T23:30:00Z", "2025-12-03")] // London 23:30 GMT
+        [InlineData("2025-12-01T23:00:00Z", "2025-12-03")] // London 23:00 GMT
         public void GetDayAheadDate_AtOrAfter23London_ReturnsDayAfterTomorrow(string utcNowString, string expectedDateString)
         {
             DateTime utcNow = DateTime.Parse(utcNowString, null, DateTimeStyles.AdjustToUniversal);
